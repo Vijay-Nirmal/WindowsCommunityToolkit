@@ -5,20 +5,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:samplepages="using:Microsoft.Toolkit.Uwp.SampleApp.SamplePages"
     mc:Ignorable="d">
 
     <Page.Resources>
         <DataTemplate x:Name="NormalTemplate">
-            <TextBlock Text="{Binding Title}" Foreground="Green"></TextBlock>
+            <TextBlock Text="{Binding}" Foreground="Green" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
         </DataTemplate>
 
         <DataTemplate x:Name="AlternateTemplate">
-            <TextBlock Text="{Binding Title}" Foreground="Red"></TextBlock>
+            <TextBlock Text="{Binding}" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold"></TextBlock>
         </DataTemplate>
     </Page.Resources>
 
     <Grid>
-
+        <TextBlock x:Name="IndexInput" Text="[Index:String:100]" Visibility="Collapsed"></TextBlock>
         <ListView 
             x:Name="SampleListView"
             Margin="12"

@@ -21,6 +21,7 @@ using Microsoft.Toolkit.Uwp.Input.GazeInteraction;
 using Microsoft.Toolkit.Uwp.SampleApp.Models;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Microsoft.Toolkit.Uwp.UI.Media;
 using Newtonsoft.Json;
 using Windows.Foundation.Metadata;
@@ -694,8 +695,19 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
             }
 
             // Search in Microsoft.Toolkit.Uwp.UI
-            var uiProxyType = ImageBlendMode.Multiply;
+            var uiProxyType = ItemPlacement.Default;
             assembly = uiProxyType.GetType().GetTypeInfo().Assembly;
+            foreach (var typeInfo in assembly.ExportedTypes)
+            {
+                if (typeInfo.Name == typeName)
+                {
+                    return typeInfo;
+                }
+            }
+
+            // Search in Microsoft.Toolkit.Uwp.UI.Media
+            var uiMediaProxyType = ImageBlendMode.Multiply;
+            assembly = uiMediaProxyType.GetType().GetTypeInfo().Assembly;
             foreach (var typeInfo in assembly.ExportedTypes)
             {
                 if (typeInfo.Name == typeName)
