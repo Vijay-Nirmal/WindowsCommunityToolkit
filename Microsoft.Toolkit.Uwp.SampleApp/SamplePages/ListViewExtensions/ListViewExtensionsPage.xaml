@@ -19,8 +19,7 @@
     </Page.Resources>
 
     <Grid>
-        <TextBlock x:Name="IndexInput" Text="[Index:String:100]" Visibility="Collapsed"></TextBlock>
-        <ListView 
+        <ListView
             x:Name="SampleListView"
             Margin="12"
             ItemTemplate="{StaticResource NormalTemplate}"
