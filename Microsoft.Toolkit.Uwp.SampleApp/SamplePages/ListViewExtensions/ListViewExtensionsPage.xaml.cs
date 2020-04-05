@@ -44,7 +44,7 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
 
         private void Load()
         {
-            SampleController.Current.RegisterNewCommand("Start Smooth Scroll", (_, __) =>
+            SampleController.Current.RegisterNewCommand("Start Smooth Scroll", (sender, args) =>
             {
                 var index = int.Parse(indexInput.Text);
                 var itemPlacement = (ItemPlacement)Enum.Parse(typeof(ItemPlacement), itemPlacementInput.Text);
@@ -56,7 +56,7 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
             });
         }
 
-        public ObservableCollection<string> GetOddEvenSource(int count)
+        private ObservableCollection<string> GetOddEvenSource(int count)
         {
             var oddEvenSource = new ObservableCollection<string>();
 
