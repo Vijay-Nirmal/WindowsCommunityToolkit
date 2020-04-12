@@ -15,8 +15,8 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
         private ListView sampleListView;
         private TextBlock indexInput;
         private TextBlock itemPlacementInput;
-        private TextBlock disableAnimationInput;
-        private TextBlock scrollIfVisibileInput;
+        private CheckBox disableAnimationInput;
+        private CheckBox scrollIfVisibileInput;
         private TextBlock additionalHorizontalOffsetInput;
         private TextBlock additionalVerticalOffsetInput;
 
@@ -31,8 +31,8 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
             sampleListView = control.FindChildByName("SampleListView") as ListView;
             indexInput = control.FindChildByName("IndexInput") as TextBlock;
             itemPlacementInput = control.FindChildByName("ItemPlacementInput") as TextBlock;
-            disableAnimationInput = control.FindChildByName("DisableAnimationInput") as TextBlock;
-            scrollIfVisibileInput = control.FindChildByName("ScrollIfVisibileInput") as TextBlock;
+            disableAnimationInput = control.FindChildByName("DisableAnimationInput") as CheckBox;
+            scrollIfVisibileInput = control.FindChildByName("ScrollIfVisibileInput") as CheckBox;
             additionalHorizontalOffsetInput = control.FindChildByName("AdditionalHorizontalOffsetInput") as TextBlock;
             additionalVerticalOffsetInput = control.FindChildByName("AdditionalVerticalOffsetInput") as TextBlock;
 
@@ -46,12 +46,12 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
         {
             SampleController.Current.RegisterNewCommand("Start Smooth Scroll", (sender, args) =>
             {
-                var index = int.Parse(indexInput.Text);
-                var itemPlacement = (ItemPlacement)Enum.Parse(typeof(ItemPlacement), itemPlacementInput.Text);
-                var disableAnimation = bool.Parse(disableAnimationInput.Text);
-                var scrollIfVisibile = bool.Parse(scrollIfVisibileInput.Text);
-                var additionalHorizontalOffset = int.Parse(additionalHorizontalOffsetInput.Text);
-                var additionalVerticalOffset = int.Parse(additionalVerticalOffsetInput.Text);
+                var index = int.Parse(indexInput?.Text);
+                var itemPlacement = (ItemPlacement)Enum.Parse(typeof(ItemPlacement), itemPlacementInput?.Text);
+                var disableAnimation = disableAnimationInput?.IsChecked ?? false;
+                var scrollIfVisibile = scrollIfVisibileInput?.IsChecked ?? true;
+                var additionalHorizontalOffset = int.Parse(additionalHorizontalOffsetInput?.Text);
+                var additionalVerticalOffset = int.Parse(additionalVerticalOffsetInput?.Text);
                 sampleListView.SmoothScrollIntoViewWithIndex(index, itemPlacement, disableAnimation, scrollIfVisibile, additionalHorizontalOffset, additionalVerticalOffset);
             });
         }
