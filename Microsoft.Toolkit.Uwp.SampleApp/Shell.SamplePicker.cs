@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.Helpers;
 using Microsoft.Toolkit.Uwp.SampleApp.Pages;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using Microsoft.Toolkit.Uwp.UI.Controls;
@@ -36,11 +38,11 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
             set
             {
                 _currentSample = value;
-                var nop = SetNavViewSelection();
+                _ = SetNavViewSelectionAsync();
             }
         }
 
-        private async Task SetNavViewSelection()
+        private async Task SetNavViewSelectionAsync()
         {
             if (_currentSample != null)
             {
@@ -59,10 +61,10 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
 
         private void HideSamplePicker()
         {
-            SamplePickerGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            SamplePickerGrid.Visibility = Visibility.Collapsed;
             _selectedCategory = null;
 
-            var noop = SetNavViewSelection();
+            _ = SetNavViewSelectionAsync();
         }
 
         private async void ShowSamplePicker(Sample[] samples = null, bool group = false)
@@ -125,7 +127,15 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
 
         private void NavView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.InvokedItem is SampleCategory category)
+            //// Temp Workaround for WinUI Bug https://github.com/microsoft/microsoft-ui-xaml/issues/2520
+            var invokedItem = args.InvokedItem;
+            if (invokedItem is FrameworkElement fe && fe.DataContext is SampleCategory cat2)
+            {
+                invokedItem = cat2;
+            }
+            //// End Workaround - args.InvokedItem
+
+            if (invokedItem is SampleCategory category)
             {
                 if (SamplePickerGrid.Visibility != Visibility.Collapsed && _selectedCategory == category)
                 {
@@ -137,6 +147,9 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
                 {
                     _selectedCategory = category;
                     ShowSamplePicker(category.Samples, true);
+
+                    // Then Focus on Picker
+                    DispatcherHelper.ExecuteOnUIThreadAsync(() => SamplePickerGridView.Focus(FocusState.Keyboard));
                 }
             }
             else if (args.IsSettingsInvoked)
@@ -323,7 +336,7 @@ namespace Microsoft.Toolkit.Uwp.SampleApp
                     animation.Configuration = new DirectConnectedAnimationConfiguration();
                 }
 
-                var t = SamplePickerGridView.TryStartConnectedAnimationAsync(animation, MoreInfoContent.DataContext, "SampleIcon");
+                _ = SamplePickerGridView.TryStartConnectedAnimationAsync(animation, MoreInfoContent.DataContext, "SampleIcon");
             }
 
             MoreInfoContent.DataContext = null;

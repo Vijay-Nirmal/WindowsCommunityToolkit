@@ -30,7 +30,9 @@
         ItemTemplate="{StaticResource NormalTemplate}"
         extensions:ListViewExtensions.AlternateColor="#33AAAAAA"
         extensions:ListViewExtensions.AlternateItemTemplate="{StaticResource AlternateTemplate}"
-        extensions:ListViewExtensions.StretchItemContainerDirection="Both">
+        extensions:ListViewExtensions.Command="{Binding SampleCommand}"
+        extensions:ListViewExtensions.StretchItemContainerDirection="Both"
+        IsItemClickEnabled="True">
     </ListView>
   </Grid>
 </Page>

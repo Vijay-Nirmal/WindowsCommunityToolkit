@@ -4,7 +4,11 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Microsoft.Toolkit.Uwp.SampleApp.Common;
+using Microsoft.Toolkit.Uwp.SampleApp.Data;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,6 +30,8 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
             Load();
         }
 
+        public ICommand SampleCommand => new DelegateCommand<string>(OnExecuteSampleCommand);
+
         public void OnXamlRendered(FrameworkElement control)
         {
             sampleListView = control.FindChildByName("SampleListView") as ListView;
@@ -40,6 +46,9 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
             {
                 sampleListView.ItemsSource = GetOddEvenSource(201);
             }
+
+            // Transfer Data Context so we can access SampleCommand
+            control.DataContext = this;
         }
 
         private void Load()
@@ -67,6 +76,11 @@ namespace Microsoft.Toolkit.Uwp.SampleApp.SamplePages
             }
 
             return oddEvenSource;
+        }
+
+        private async void OnExecuteSampleCommand(string item)
+        {
+            await new MessageDialog($"You clicked {item} via the 'ListViewExtensions.Command' binding", "Item Clicked").ShowAsync();
         }
     }
 }
